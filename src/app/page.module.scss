@@ -1,0 +1,79 @@
+.home-container {
+  min-height: 100vh;
+}
+
+.table-container{ 
+  border-collapse:collapse;
+  text-align: center;
+  margin: 30px 0;
+  margin-left: 10%;
+  width: 80%;
+  .header{
+    .no-border{
+      th{
+        border: 0;
+      }
+    }
+    th{
+      background-color: cadetblue;
+    }
+  }
+  .body{
+    .inTheMoney{
+      background-color: aquamarine;
+    }
+    .strikPrice{
+      background-color: blanchedalmond;
+    }
+    .atTheMoney{
+      background-color: greenyellow;
+    }
+    .outTheMoney{
+      background-color: burlywood
+    }
+    .danger{
+      color: red;
+    }
+  }
+  tr,th,td{
+    padding: 5px;
+  }
+}
+.calc-container{
+  display: flex;
+  width: 80%;
+  margin-left: 10%;
+  justify-content: space-between;
+  margin-top: 20px;
+  .oi-container,.changedOi-container{
+    border: 1px solid black;
+    padding: 5px;
+    background-color: cadetblue;
+  }
+  .trend{
+    .up{
+      color: greenyellow;
+    }
+    .down{
+      color: red;
+    }
+  }
+  .optionType{
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
+.columnCount-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+  .columnCount{
+    width: 100px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+}
