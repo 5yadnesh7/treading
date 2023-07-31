@@ -1,7 +1,7 @@
 import React from 'react'
 import CanvasJSReact from '@canvasjs/react-charts';
 
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const CanvasGraph = ({ data, title, strikePriceAry }) => {
 

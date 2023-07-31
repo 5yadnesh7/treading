@@ -2,7 +2,8 @@
 import { useEffect, useState } from "react";
 import styles from "./page.module.scss";
 import Axios from "axios";
-import CanvasGraph from "@/components/canvasGraph";
+import dynamic from "next/dynamic";
+const CanvasGraph = dynamic(() => import("@/components/canvasGraph"), { ssr: false });
 import { filterByStrikePrice } from "@/helpers/method";
 
 const Home = () => {
@@ -79,13 +80,9 @@ const Home = () => {
   };
 
   const putCallRation = (opData?.poi / opData?.coi).toFixed(2);
-  const changedPutCallRation = (opData?.changedPE / opData?.changedCE).toFixed(
-    2
-  );
-  const downtrend =
-    putCallRation > 1.7 || (putCallRation >= 0.7 && putCallRation <= 1);
-  const uptrend =
-    putCallRation < 0.7 || (putCallRation >= 1 && putCallRation <= 1.7);
+  const changedPutCallRation = (opData?.changedPE / opData?.changedCE).toFixed(2);
+  const downtrend = putCallRation >= 1.7 || (putCallRation > 0.7 && putCallRation <= 1);
+  const uptrend = putCallRation <= 0.7 || (putCallRation > 1 && putCallRation <= 1.7);
 
   return (
     <div className={styles["home-container"]}>
