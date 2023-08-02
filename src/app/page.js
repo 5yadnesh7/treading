@@ -33,54 +33,55 @@ const Home = () => {
   }, [selectedOpType]);
 
   const fetchNseData = (symbol = "NIFTY", columnCount = 5) => {
-    Axios.get(`/api/nse?symbol=${symbol}`)
-      .then((rsp) => {
-        const res = rsp.data;
-        if (res.isSuccess) {
-          const data = res.data.filtered.data;
-          const PE = res.data.filtered.PE.totOI;
-          const CE = res.data.filtered.CE.totOI;
-          let changedPE = 0;
-          let changedCE = 0;
-          const callOiAry = []
-          const putOiAry = []
-          const callOiChangedAry = []
-          const putOiChangedAry = []
-          let currentStrikePrice = ""
-          data.map((item) => {
-            if (!currentStrikePrice) {
-              currentStrikePrice = item.CE.underlyingValue
-            }
-            changedCE += item.CE.changeinOpenInterest;
-            changedPE += item.PE.changeinOpenInterest;
-
-            callOiAry.push({ label: item.CE.strikePrice, y: item.CE.openInterest })
-            putOiAry.push({ label: item.PE.strikePrice, y: item.PE.openInterest })
-            callOiChangedAry.push({ label: item.CE.strikePrice, y: item.CE.changeinOpenInterest })
-            putOiChangedAry.push({ label: item.PE.strikePrice, y: item.PE.changeinOpenInterest })
-          });
-
-          const formattedCallOiAry = filterByStrikePrice(callOiAry, currentStrikePrice, columnCount);
-          const formattedPutOiAry = filterByStrikePrice(putOiAry, currentStrikePrice, columnCount);
-          const formattedCallChangedOiAry = filterByStrikePrice(callOiChangedAry, currentStrikePrice, columnCount);
-          const formattedPutChangedOiAry = filterByStrikePrice(putOiChangedAry, currentStrikePrice, columnCount);
-          const strikePriceAry = []
-          for (let i = 1; i <= (columnCount * 2) + 1; i++) {
-            if (i == columnCount + 1) {
-              strikePriceAry.push({ label: "", y: currentStrikePrice })
-            } else {
-              strikePriceAry.push({ label: "", y: "" })
-            }
+    Axios.get(`/api/nse?symbol=${symbol}`).then((rsp) => {
+      const res = rsp.data;
+      if (res.isSuccess) {
+        const data = res.data.filtered.data;
+        const PE = res.data.filtered.PE.totOI;
+        const CE = res.data.filtered.CE.totOI;
+        let changedPE = 0;
+        let changedCE = 0;
+        const callOiAry = []
+        const putOiAry = []
+        const callOiChangedAry = []
+        const putOiChangedAry = []
+        let currentStrikePrice = ""
+        data.map((item) => {
+          if (!currentStrikePrice) {
+            currentStrikePrice = item.CE.underlyingValue
           }
-          setOpData({ poi: PE, coi: CE, data, changedCE, changedPE, oiGraph: { call: formattedCallOiAry, put: formattedPutOiAry }, oiChangedGraph: { call: formattedCallChangedOiAry, put: formattedPutChangedOiAry }, strikePriceAry });
+          changedCE += item.CE.changeinOpenInterest;
+          changedPE += item.PE.changeinOpenInterest;
+
+          callOiAry.push({ label: item.CE.strikePrice, y: item.CE.openInterest })
+          putOiAry.push({ label: item.PE.strikePrice, y: item.PE.openInterest })
+          callOiChangedAry.push({ label: item.CE.strikePrice, y: item.CE.changeinOpenInterest })
+          putOiChangedAry.push({ label: item.PE.strikePrice, y: item.PE.changeinOpenInterest })
+        });
+
+        const formattedCallOiAry = filterByStrikePrice(callOiAry, currentStrikePrice, columnCount);
+        const formattedPutOiAry = filterByStrikePrice(putOiAry, currentStrikePrice, columnCount);
+        const formattedCallChangedOiAry = filterByStrikePrice(callOiChangedAry, currentStrikePrice, columnCount);
+        const formattedPutChangedOiAry = filterByStrikePrice(putOiChangedAry, currentStrikePrice, columnCount);
+        const strikePriceAry = []
+        for (let i = 1; i <= (columnCount * 2) + 1; i++) {
+          if (i == columnCount + 1) {
+            strikePriceAry.push({ label: "", y: currentStrikePrice })
+          } else {
+            strikePriceAry.push({ label: "", y: "" })
+          }
         }
-      }).catch((err) => {
-        console.log("Error is ", err);
-      });
+        setOpData({ poi: PE, coi: CE, data, changedCE, changedPE, oiGraph: { call: formattedCallOiAry, put: formattedPutOiAry }, oiChangedGraph: { call: formattedCallChangedOiAry, put: formattedPutChangedOiAry }, strikePriceAry });
+      }
+    }).catch((err) => {
+      console.log("Error is ", err);
+    });
   };
 
   const putCallRation = (opData?.poi / opData?.coi).toFixed(2);
-  const changedPutCallRation = (opData?.changedPE / opData?.changedCE).toFixed(2);
+  const changePE = opData?.changedCE < 0 ? opData?.changedPE + Math.abs(opData?.changedCE) : Math.abs(opData?.changedPE)
+  const changeCE = opData?.changedPE < 0 ? opData?.changedCE + Math.abs(opData?.changedPE) : Math.abs(opData?.changedCE)
+  const changedPutCallRation = (changePE / changeCE).toFixed(2);
   const downtrend = putCallRation >= 1.7 || (putCallRation > 0.7 && putCallRation <= 1);
   const uptrend = putCallRation <= 0.7 || (putCallRation > 1 && putCallRation <= 1.7);
 
