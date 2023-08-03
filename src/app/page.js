@@ -78,10 +78,10 @@ const Home = () => {
     });
   };
 
-  const putCallRation = (opData?.poi / opData?.coi).toFixed(2);
-  const changePE = opData?.changedCE < 0 ? opData?.changedPE + Math.abs(opData?.changedCE) : Math.abs(opData?.changedPE)
-  const changeCE = opData?.changedPE < 0 ? opData?.changedCE + Math.abs(opData?.changedPE) : Math.abs(opData?.changedCE)
-  const changedPutCallRation = (changePE / changeCE).toFixed(2);
+  const putCallRation = (opData?.poi / opData?.coi).toFixed(4);
+  const changePE = opData?.changedCE < 0 ? Math.abs(opData?.changedPE) + Math.abs(opData?.changedCE) : Math.abs(opData?.changedPE)
+  const changeCE = opData?.changedPE < 0 ? Math.abs(opData?.changedCE) + Math.abs(opData?.changedPE) : Math.abs(opData?.changedCE)
+  const changedPutCallRation = (changePE / changeCE).toFixed(4);
   const downtrend = putCallRation >= 1.7 || (putCallRation > 0.7 && putCallRation <= 1);
   const uptrend = putCallRation <= 0.7 || (putCallRation > 1 && putCallRation <= 1.7);
 
@@ -101,7 +101,7 @@ const Home = () => {
               <div className={styles["trend"]}>
                 Trend Chance:-
                 <label className={`${downtrend && styles["down"]} ${uptrend && styles["up"]}`}>
-                  {downtrend ? "Down" : uptrend ? "Up" : ""}
+                  {downtrend ? "Down" : uptrend ? "Up" : "Up"}
                 </label>
               </div>
             </div>
@@ -135,14 +135,14 @@ const Home = () => {
               <div className={styles["trend"]}>
                 Trend Chance:-
                 <label
-                  className={`${changedPutCallRation < 1 && styles["down"]} ${changedPutCallRation > 1 && styles["up"]
+                  className={`${changedPutCallRation < 1 && styles["down"]} ${changedPutCallRation >= 1 && styles["up"]
                     }`}
                 >
                   {changedPutCallRation < 1
                     ? "Down"
                     : changedPutCallRation > 1
                       ? "Up"
-                      : ""}
+                      : "Up"}
                 </label>
               </div>
             </div>
