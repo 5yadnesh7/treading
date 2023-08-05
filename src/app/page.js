@@ -96,13 +96,7 @@ const Home = () => {
                 Total Call OI:- {opData.coi}
               </div>
               <div className={styles["callPutRatio"]}>
-                Put Call Ration:- {putCallRation}
-              </div>
-              <div className={styles["trend"]}>
-                Trend Chance:-
-                <label className={`${downtrend && styles["down"]} ${uptrend && styles["up"]}`}>
-                  {downtrend ? "Down" : uptrend ? "Up" : "Up"}
-                </label>
+                PCR:- {putCallRation}
               </div>
             </div>
             <div>
@@ -130,7 +124,7 @@ const Home = () => {
                 Total Call OI Changed:- {opData.changedCE}
               </div>
               <div className={styles["callPutRatio"]}>
-                Put Call Ration:- {changedPutCallRation}
+                PCR:- {changedPutCallRation}
               </div>
               <div className={styles["trend"]}>
                 Trend Chance:-
